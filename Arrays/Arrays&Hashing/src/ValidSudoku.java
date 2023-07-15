@@ -1,3 +1,5 @@
+import java.util.HashSet;
+
 public class ValidSudoku {
     public static void main(String[] args) throws Exception {
         char[][] firstCase = new char[][] { { '5', '3', '.', '.', '7', '.', '.', '.', '.' },
@@ -16,11 +18,21 @@ public class ValidSudoku {
     }
 
     public static boolean isValidSudoku(char[][] board) {
-        boolean result = false;
-
-
-        System.out.println(result);
-        return result;
-
+        HashSet<String> seen = new HashSet<>();
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                char currentValue = board[i][j];
+                if (currentValue != '.') {
+                    if (!seen.add(currentValue + " found in row " + i)
+                            || !seen.add(currentValue + " found in column " + j)
+                            || !seen.add(currentValue + " found in boxes" + i / 3 + "-" + j / 3)) {
+                        System.out.println(false);
+                        return false;
+                    }
+                }
+            }
+        }
+        System.out.println(true);
+        return true;
     }
 }
