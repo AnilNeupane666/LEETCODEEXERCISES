@@ -23,31 +23,31 @@ public class Encrypt{
         encrypt();
     }
     public static void encrypt() throws Exception {
-			String pinBlock = generatePinBlock("3695");
-			final byte[] aesIv = new byte[12];
-			final byte[] aesKey = new byte[32];
-			SecureRandom random = SecureRandom.getInstanceStrong();
-			random.nextBytes(aesIv);
-			random.nextBytes(aesKey);
+		String pinBlock = generatePinBlock("3695");
+		final byte[] aesIv = new byte[12];
+		final byte[] aesKey = new byte[32];
+		SecureRandom random = SecureRandom.getInstanceStrong();
+		random.nextBytes(aesIv);
+		random.nextBytes(aesKey);
 			
-			Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-			GCMParameterSpec parameterSpec = new GCMParameterSpec(128, aesIv);
-			SecretKeySpec keySpec = new SecretKeySpec(aesKey, "AES");
-            cipher.init(Cipher.ENCRYPT_MODE, keySpec, parameterSpec);
+		Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+		GCMParameterSpec parameterSpec = new GCMParameterSpec(128, aesIv);
+		SecretKeySpec keySpec = new SecretKeySpec(aesKey, "AES");
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, parameterSpec);
 
-			byte[] pinBlockBytes = pinBlock.getBytes();
-			byte[] cipherText = cipher.doFinal(pinBlockBytes);
-			byte[] encPinBlockWithoutIvAndAuthTag = Arrays.copyOfRange(cipherText, 0, cipherText.length - 16);
-			byte[] authTag = cipher.getParameters().getParameterSpec(GCMParameterSpec.class).getIV();
-			String encodedMessage = Base64.getEncoder().encodeToString(encPinBlockWithoutIvAndAuthTag);
-			byte[] details = concatenateBytes(new byte[] { (byte) aesKey.length }, aesKey, new byte[] { (byte) aesIv.length }, aesIv, new byte[] { (byte) authTag.length }, authTag);
+		byte[] pinBlockBytes = pinBlock.getBytes();
+		byte[] cipherText = cipher.doFinal(pinBlockBytes);
+		byte[] encPinBlockWithoutIvAndAuthTag = Arrays.copyOfRange(cipherText, 0, cipherText.length - 16);
+		byte[] authTag = cipher.getParameters().getParameterSpec(GCMParameterSpec.class).getIV();
+		String encodedMessage = Base64.getEncoder().encodeToString(encPinBlockWithoutIvAndAuthTag);
+		byte[] details = concatenateBytes(new byte[] { (byte) aesKey.length }, aesKey, new byte[] { (byte) aesIv.length }, aesIv, new byte[] { (byte) authTag.length }, authTag);
 			
-			String encodedDetails = encryptRSAOAEP(details, "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFvZ0dSQ3k4N1FjQ3d6MFI0NE9LTwpucEhhZ0p1bW83Wll1V21JdXY2b1ZseUxqYkcwWlgyUFBSUy9LVUdhbXdiWGQwMGtYeHBXbFA5cXJ2N2hYMlNSCkJ2TFJVWFR0TCtvWS9QajN0c2Z6d0liT3VDei9qUnQ5Uk9WdzNBTkZTNjF6blVFTkVsSlNXN2dudnJuL29USWwKRWlid2VVTE5aTlJObFRwQTI1QVhKanhXMzM3ZUx0Y2F5cXJiQlNJNVFmRitCTGJJbE1Rd2tqSkNhUFEzV0pUKwpxcnlCREFCME5ocm02VlBmK2toN2FyR2JqL3ZLS0NRWVBkQWhRKzI3OGp0ZGJZdFBzYWtjN0RqVXpTenl2Wm9HCmhiSEt4V0ZTODFnL2ZlQUZNbFFDVlErZk15ZVN5dFZKOGlmZjFZR2RydEJCdG16U0NRN2V0K1IwaHpUbzJXblcKZzREZG1oWmlZT0MvUU55dk5uY1VSeDRZMU84VW1nSmorNE56c3VyQ2dQMmRSUjNpVXRIYlZaZjRzTEpZWk5CWApORGxjUDNzYWlwTXJ6Z0RpM0VCbWZzdEJOODdvWVdsRzRQNmlPVGt3dzdDVyt0TUdRNmJPcVBBNFF0cWMrYUZMCktZR3FWREhWRnBhZWdwYXl0U2g3T25nd0cwckJod0M4ODNpeVFaZDNKRW1lSWt2V05wYTVRSExqRmJKTEg4M2YKdk9TR2E0aGR6ZmZqYUhUM2VvR2VCRU5NaTZIbFo4RVZHWUh0VUpXZGMzZ2h5OHdPbmZkTlN2NzV3SUZYbHNragpIdHM3Z3NkM3hDN1B3ZnBqOEV5Lyt2aTVLNHM5M29IaE5TYlRhNlUzNUVsZkFXL20zK1YxWjZqVUpwRWpmZkZYCnI0YlFiR3pQNVhWYkNKL21ndmVNM3lNQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=");
-            System.out.println("Encripted pin: " +encodedMessage);
-            System.out.println("Encripted details :" + encodedDetails);
+		String encodedDetails = encryptRSAOAEP(details, "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFvZ0dSQ3k4N1FjQ3d6MFI0NE9LTwpucEhhZ0p1bW83Wll1V21JdXY2b1ZseUxqYkcwWlgyUFBSUy9LVUdhbXdiWGQwMGtYeHBXbFA5cXJ2N2hYMlNSCkJ2TFJVWFR0TCtvWS9QajN0c2Z6d0liT3VDei9qUnQ5Uk9WdzNBTkZTNjF6blVFTkVsSlNXN2dudnJuL29USWwKRWlid2VVTE5aTlJObFRwQTI1QVhKanhXMzM3ZUx0Y2F5cXJiQlNJNVFmRitCTGJJbE1Rd2tqSkNhUFEzV0pUKwpxcnlCREFCME5ocm02VlBmK2toN2FyR2JqL3ZLS0NRWVBkQWhRKzI3OGp0ZGJZdFBzYWtjN0RqVXpTenl2Wm9HCmhiSEt4V0ZTODFnL2ZlQUZNbFFDVlErZk15ZVN5dFZKOGlmZjFZR2RydEJCdG16U0NRN2V0K1IwaHpUbzJXblcKZzREZG1oWmlZT0MvUU55dk5uY1VSeDRZMU84VW1nSmorNE56c3VyQ2dQMmRSUjNpVXRIYlZaZjRzTEpZWk5CWApORGxjUDNzYWlwTXJ6Z0RpM0VCbWZzdEJOODdvWVdsRzRQNmlPVGt3dzdDVyt0TUdRNmJPcVBBNFF0cWMrYUZMCktZR3FWREhWRnBhZWdwYXl0U2g3T25nd0cwckJod0M4ODNpeVFaZDNKRW1lSWt2V05wYTVRSExqRmJKTEg4M2YKdk9TR2E0aGR6ZmZqYUhUM2VvR2VCRU5NaTZIbFo4RVZHWUh0VUpXZGMzZ2h5OHdPbmZkTlN2NzV3SUZYbHNragpIdHM3Z3NkM3hDN1B3ZnBqOEV5Lyt2aTVLNHM5M29IaE5TYlRhNlUzNUVsZkFXL20zK1YxWjZqVUpwRWpmZkZYCnI0YlFiR3pQNVhWYkNKL21ndmVNM3lNQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=");
+        System.out.println("Encripted pin: " +encodedMessage);
+        System.out.println("Encripted details :" + encodedDetails);
 	}
 
-  private static byte[] concatenateBytes(byte[]... byteArrays) {
+    private static byte[] concatenateBytes(byte[]... byteArrays) {
     int totalLength = 0;
     for (byte[] byteArray : byteArrays) {
         totalLength += byteArray.length;
