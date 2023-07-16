@@ -1,6 +1,6 @@
 package twopointers.src;
 public class ValidPalindrome {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         String testCase1 = "A man, a plan, a canal: Panama";
         String testCase2 = "race a car";
         isValid(testCase1);

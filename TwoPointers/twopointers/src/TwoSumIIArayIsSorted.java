@@ -2,7 +2,7 @@ package twopointers.src;
 import java.util.Arrays;
 
 public class TwoSumIIArayIsSorted {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
        // twoSum(new int[] { 2, 7, 11, 15 }, 9);
         //twoSum(new int[] { 2, 3, 4, 15 }, 6);
         twoSumWithinTImeLimit(new int[] { 2, 3, 4, 15 }, 18);
