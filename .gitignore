@@ -7,3 +7,6 @@ TwoPointers/twopointers/.vscode/settings.json
 TwoPointers/twopointers/src/App.java
 TwoPointers/TwoSumIIArayIsSorted.class
 Stack/.vscode/settings.json
+*.iml
+.idea/misc.xml
+.idea/modules.xml
